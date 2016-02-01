@@ -1,17 +1,11 @@
 wp-bootstrap-navwalker
 ======================
 
-**A custom WordPress nav walker class to fully implement the Bootstrap 3.0+ navigation style in a custom theme using the WordPress built in menu manager.**
+**A custom WordPress nav walker class to fully implement the Bootstrap 4.0 Alpha navigation style in a custom theme using the WordPress built in menu manager.**
 
-![Extras](http://edwardmcintyre.com/pub/github/navwalker-3-menu.jpg)
-
-Bootstrap 2.x vs Bootstrap 3.0
+Bootstrap 4
 ------------
-There are many changes Bootstrap 2.x & Bootstrap 3.0 that affect both how the nav walker class is used and what the walker supports. For CSS changes I recommend reading the Migrating from 2.x to 3.0 in the official Bootstrap docs http://getbootstrap.com/getting-started/#migration
 
-The most noticeable functionality change in Bootstrap 3.0.0+ is that it only supports a single dropdown level. This script is intended to implement the Bootstrap 3.0 menu structure without adding additional features, so additional dropdown levels will not be supported.
-
-If you would like to use **Bootstrap 2.x** you can find the legacy version of the walker class here https://github.com/twittem/wp-bootstrap-navwalker/tree/For-Bootstrap-2.3.2
 
 NOTE
 ----
@@ -34,18 +28,31 @@ Update your `wp_nav_menu()` function in `header.php` to use the new walker by ad
 
 ```php
  <?php
-            wp_nav_menu( array(
-                'menu'              => 'primary',
-                'theme_location'    => 'primary',
-                'depth'             => 2,
-                'container'         => 'div',
-                'container_class'   => 'collapse navbar-collapse',
-		'container_id'      => 'bs-example-navbar-collapse-1',
-                'menu_class'        => 'nav navbar-nav',
-                'fallback_cb'       => 'wp_bootstrap_navwalker::fallback',
-                'walker'            => new wp_bootstrap_navwalker())
-            );
-        ?>
+/**
+ * Displays a navigation menu
+ * @param array $args Arguments
+ */
+$args = array(
+    'theme_location' => '',
+    'menu' => '',
+    'container' => 'div',
+    'container_class' => 'menu-{menu-slug}-container',
+    'container_id' => '',
+    'menu_class' => 'menu',
+    'menu_id' => '',
+    'echo' => true,
+    'fallback_cb' => 'wp_bootstrap_navwalker::fallback',
+    'before' => '',
+    'after' => '',
+    'link_before' => '',
+    'link_after' => '',
+    'items_wrap' => '<ul id = "%1$s" class = "%2$s">%3$s</ul>',
+    'depth' => 0,
+    'walker' => new wp_bootstrap_navwalker(),
+);
+
+wp_nav_menu($args);
+?>
 ```
 
 Your menu will now be formatted with the correct syntax and classes to implement Bootstrap dropdown navigation. 
@@ -61,35 +68,49 @@ register_nav_menus( array(
 Typically the menu is wrapped with additional markup, here is an example of a ` navbar-fixed-top` menu that collapse for responsive navigation.
 
 ```php
-<nav class="navbar navbar-default" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="<?php echo home_url(); ?>">
-                <?php bloginfo('name'); ?>
-            </a>
-    </div>
+<nav class="navbar navbar-light bg-faded">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <?php
+/**
+ * Displays a navigation menu
+ * @param array $args Arguments
+ */
+$args = array(
+    'theme_location' => '',
+    'menu' => '',
+    'container' => 'div',
+    'container_class' => 'menu-{menu-slug}-container',
+    'container_id' => '',
+    'menu_class' => 'menu',
+    'menu_id' => '',
+    'echo' => true,
+    'fallback_cb' => 'wp_bootstrap_navwalker::fallback',
+    'before' => '',
+    'after' => '',
+    'link_before' => '',
+    'link_after' => '',
+    'items_wrap' => '<ul id = "%1$s" class = "%2$s">%3$s</ul>',
+    'depth' => 0,
+    'walker' => new wp_bootstrap_navwalker(),
+);
 
-        <?php
-            wp_nav_menu( array(
-                'menu'              => 'primary',
-                'theme_location'    => 'primary',
-                'depth'             => 2,
-                'container'         => 'div',
-                'container_class'   => 'collapse navbar-collapse',
-		'container_id'      => 'bs-example-navbar-collapse-1',
-                'menu_class'        => 'nav navbar-nav',
-                'fallback_cb'       => 'wp_bootstrap_navwalker::fallback',
-                'walker'            => new wp_bootstrap_navwalker())
-            );
-        ?>
-    </div>
+wp_nav_menu($args);
+?>
+  <ul class="nav navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Features</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Pricing</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">About</a>
+    </li>
+  </ul>
+  
 </nav>
 ```
 
